@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="light">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="emotion-insertion-point" content="">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <meta name="description"
+    content="Petpet Gif Generator - Create adorable petting GIFs and head pat GIFs online. Upload any image and generate cute petting animations. Free, fast, and easy to use.">
+  <meta name="theme-color" content="#ffeaa8">
+  <meta property="og:title" content="Petpet Gif Generator - Petting GIF & Head Pat GIF Maker">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.wangdu.site/petpet/">
+  <meta property="og:image" itemprop="image" content="https://www.wangdu.site/petpet/img/pet.png">
+  <meta property="og:description" itemprop="description"
+    content="Petpet Gif Generator - Create adorable petting GIFs and head pat GIFs online. Upload any image and generate cute petting animations. Free, fast, and easy to use.">
+  <title>Petpet Gif Generator - Create Petting GIFs & Head Pat GIFs</title>
+  <link rel="icon" href="./img/favicon.ico">
+
+  <link rel="apple-touch-icon" sizes="57x57" href="./img/favicon-57x57.png" type="image/png" />
+  <link rel="apple-touch-icon" sizes="60x60" href="./img/favicon-60x60.png" type="image/png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="./img/favicon-72x72.png" type="image/png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="./img/favicon-114x114.png" type="image/png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="./img/favicon-120x120.png" type="image/png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="./img/favicon-144x144.png" type="image/png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="./img/favicon-152x152.png" type="image/png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./img/favicon-180x180.png" type="image/png" />
+  <link rel="icon" sizes="16x16" href="./img/favicon-16x16.png" type="image/png" />
+  <link rel="icon" sizes="32x32" href="./img/favicon-32x32.png" type="image/png" />
+  <link rel="icon" sizes="96x96" href="./img/favicon-96x96.png" type="image/png" />
+  <link rel="icon" sizes="192x192" href="./img/favicon-192x192.png" type="image/png" />
+  <link rel="icon" sizes="512x512" href="./img/favicon-512x512.png" type="image/png" />
+  <link rel="manifest" href="./img/manifest.json" />
+  <meta name="theme-color" content="#FFFFFF" />
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <meta name="msapplication-TileImage" content="/favicon-512x512.png" />
+
+  <!-- Sanitize CSS -->
+  <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
+  <link href="https://unpkg.com/sanitize.css/forms.css" rel="stylesheet">
+  <link href="https://unpkg.com/sanitize.css/typography.css" rel="stylesheet">
+
+  <!-- External -->
+  <link rel="stylesheet" href="https://unpkg.com/jam-icons/css/jam.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@700&amp;family=Work+Sans:wght@400;600&amp;display=swap"
+    rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./assets/style.css">
+  <style type="text/css">
+    .grid {
+      margin: 0 auto;
+      max-width: 48em;
+      display: grid;
+      grid-template-columns: 38.2% 61.8%;
+      grid-template-areas:
+        "header  header"
+        "preview upload"
+        "preview output"
+        "content content"
+        "footer  footer";
+    }
+
+    .content {
+      grid-area: content;
+      padding: 1.618em;
+      border-radius: 0.618em;
+      margin-top: 1em;
+    }
+
+    .header {
+      grid-area: header;
+      text-align: center;
+      padding: 0.618em 0.618em 1.25em;
+    }
+
+    .preview {
+      grid-area: preview;
+      border-top-left-radius: 0.618em;
+      border-bottom-left-radius: 0.618em;
+      padding-right: 0;
+    }
+
+    .upload {
+      grid-area: upload;
+      border-top-right-radius: 0.618em;
+    }
+
+    .output {
+      grid-area: output;
+      border-bottom-right-radius: 0.618em;
+    }
+
+    .footer {
+      grid-area: footer;
+      text-align: center;
+      padding: 1.618em;
+    }
+
+    .preview-canvas {
+      margin: 0 auto 2.312em;
+      max-width: 200px;
+    }
+
+    .preview-playback {
+      display: flex;
+    }
+
+    .preview-playback .btn {
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+      flex-grow: 1;
+    }
+
+    .btn-playback-playpause.paused .btn-playback-pause,
+    .btn-playback-playpause:not(.paused) .btn-playback-play {
+      display: none;
+    }
+
+    .export-row {
+      margin-top: 1.75em;
+    }
+
+    .output-info {
+      color: var(--txt-light);
+    }
+
+    img[src]+.output-info {
+      margin-top: 1em;
+    }
+
+    fieldset {
+      padding: 0;
+      margin: 0;
+      border: 0;
+    }
+
+    #fpsVal {
+      width: 4em;
+      margin-left: 0.618em;
+    }
+
+    @media only screen and (max-width: 40em) {
+      .grid {
+        grid-template-columns: 100%;
+        grid-template-areas:
+          "header"
+          "upload"
+          "preview"
+          "output"
+          "footer";
+      }
+
+      .header,
+      .footer,
+      .content {
+        padding: 1.618em 8%;
+        border-radius: 0;
+      }
+
+      .preview {
+        padding-left: 16%;
+        padding-right: 16%;
+      }
+
+      .content,
+      .footer {
+        border-top: 1px solid var(--input-border);
+      }
+
+      .export-row {
+        margin-top: 2.5em;
+      }
+
+      #fpsVal {
+        width: 7em;
+        font-size: small;
+        padding: 0.5em;
+        padding-right: 0.2em;
+      }
+    }
+  </style>
+  <script>
+    /* change theme */
+    let theme = localStorage.getItem("theme"); theme || (theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"), document.documentElement.setAttribute("data-theme", theme), document.addEventListener("DOMContentLoaded", () => { document.querySelectorAll("a.e").forEach(x => { x.href = x.dataset.href }); const e = document.getElementById("color-theme"); e.checked = "dark" == theme, e.addEventListener("change", t => { theme = e.checked ? "dark" : "light", document.documentElement.setAttribute("data-theme", theme), localStorage.setItem("theme", theme) }) });
+  </script>
+</head>
+
+<body>
+  <main class="grid">
+    <header class="header">
+      <h1>Petpet Gif Generator - Create Petting GIFs & Head Pat GIFs</h1>
+      <div class="heading">
+        <input type="checkbox" id="color-theme" title="toggle theme">
+      </div>
+      <div>Create adorable petting and head pat animations from any image</div>
+    </header>
+
+    <section class="preview content">
+      <div class="content-heading">preview</div>
+      <div class="preview-canvas">
+        <canvas height="112" width="112" id="canvas" class="canvas" tabindex="1"></canvas>
+        <div class="preview-playback">
+          <button id="prev" class="btn btn-playback-prev control-grouped-left">
+            <i class="jam jam-set-backward"></i>
+          </button>
+          <button id="play" class="btn btn-playback-playpause control-grouped-center">
+            <i class="jam jam-play btn-playback-play"></i>
+            <i class="jam jam-pause btn-playback-pause"></i>
+          </button>
+          <button id="next" class="btn btn-playback-next control-grouped-right">
+            <i class="jam jam-set-forward"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="preview-controls">
+        <div class="row">
+          <div class="control-group">
+            <label for="toggleAdjust" class="control-group-l">adjust mode</label>
+            <label for="toggleAdjust" class="toggle-switch">
+              <input id="toggleAdjust" type="checkbox" class="toggle-switch-input">
+              <span class="toggle-switch-control"></span>
+            </label>
+          </div>
+          <div class="hint">
+            enable to move your image with mouse/touch/keyboard in the preview. works on mobile
+            <a class="e" data-href="https://i.imgur.com/q0NE5rh.jpg" target="_blank"
+              href="https://i.imgur.com/q0NE5rh.jpg">too</a> :-)
+          </div>
+        </div>
+        <div class="row control-group">
+          <label for="toggleFlip" class="control-group-l">flip</label>
+          <label for="toggleFlip" class="toggle-switch sm">
+            <input id="toggleFlip" type="checkbox" class="toggle-switch-input">
+            <span class="toggle-switch-control"></span>
+          </label>
+        </div>
+        <div class="row control-group">
+          <label for="scale" class="control-label control-group-s">size</label>
+          <input id="scale" class="control-range control-group-l" type="range" step="1" min="15" max="200" value="85">
+        </div>
+        <div class="row control-group">
+          <label for="squish" class="control-label control-group-s">squish</label>
+          <input id="squish" class="control-range control-group-l" type="range" step="1" min="100" max="300"
+            value="125">
+        </div>
+        <div class="row control-group">
+          <label for="fps" class="control-label control-group-s">speed</label>
+          <input id="fps" class="control-range" type="range" step="2" min="2" max="60" value="16">
+          <input type="number" id="fpsVal" class="control control-sm" step="1" min="2" max="60" value="16">
+        </div>
+        <div class="row export-row">
+          <div class="control-group">
+            <button id="reset" class="btn btn-reset control-group-s">reset</button>
+            <div class="spacer" style="width:0.382em"></div>
+            <button id="export" class="btn btn-export control-group-l">export</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="upload content">
+      <div class="content-heading">upload</div>
+      <div class="upload-preview">
+        <label class="drop-area preview-image-container" id="dropArea" for="uploadFile">
+          <div class="drop-area-input">
+            <input class="drop-area-file-input" type="file" id="uploadFile" accept="image/*">
+            <img class="drop-area-preview preview-image"
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAQAElEQVR4AexdCbgUxbU+oCxehAvIJpsQURBBUIkYwbA8EURWNexPENmMrHEBfYCIPAO4IKDIFgHDJoGAgshiABUSQTZlUSIGRCSKoAiyI77/78eQuffOTHfPdM90T5/7nXOru+vU9lf3ma6qU6dzi/4pAopAYBFQBRDYrteGKwIiqgD0LlAEAoyAKoAAd742PdgIsPWqAIiCsiIQUARUAQS047XZigARUAVAFJQVgYAioAogoB2vzQ42AqHWqwIIIaGhIhBABFQBBLDTtcmKQAgBVQAhJDRUBAKIgCqAAHa6NjnYCIS3XhVAOBp6rAgEDAFVAAHrcG2uIhCOgCqAcDT0WBEIGAKqAPzb4Y+i6mM8yg+jXkoeRCB7lVQBZEfE++clUcXO4D7g/h7l3qgX6xjOzXEtD1jJQwioAvBQZ0SoymW4dlU2ro/z6eDyYK9SFVSMdQznkbjG6/kQKnkEAVUAHumIKNVogOtbs/FUnPuRKqPSH4BrgZU8goAqAI90RIRqdMW1oeDC2fhynPuRLkGlM8F8E1iI0AoPgpySQwhEykYVQCRUUn+NY+fuqEZtcLpRXTSolUUmDk9Blsw3CBwqOYmAKgAn0bSX1xUQrxeFObl3K+KCTpwzGAYQyPchJF41ECo5hIAqAIeAtJkNJ8IaI82aKFwT121TRkY+ySyUkXQueDnnKsXtvxEogHi9jJBDCb13AUSipCAmimB86bsgGW9oBM7RiEFtZM2ioUnnuZP7yuUF8jvXkNg5UTlSEVSKLaax4QhEO1YFEA0Z964PRNa9wBXBCVOdWyrLtHEPGXxvs9pSs1qFpPNvf3OdTHq+m1GHUF1eGdVVypXhKCfhJmbPgJOgVALPIWIa+EGwUpwIqAKIEzgbyepAlpNZIeavP29gXLZH111bRjq3rZeFu7SrJyEuX7aYvQwdkuavf4d7616sh1Ef1JPh1RVot+RQQVmzaYFTYkkOYRsKObxCtJIZAqoAzBCKL74AktW4wI8jDDeIqYJz21ShfHF5oH19mT7+oSzcrVND23klIwHnI4YPbCMd7q0jNa6/yhJfe/WV8VSNqwrh+PKYw6sQ/gzLxZNxENKoAnCnl/kLz3EquYkTRYwY1FZ6d/XfD9ugPi0tz0lMHdPDCaiYRzj+7INA2xMQkGisCiAaMubXp0BkdRTmTHVhxJHzIoybShbPlDmT+krjBjfIZZcllFXcdUgkId8ECmcWECt8Y/WKsnrhUIM5n5FAuZciLbEP8T04D/VVDRwrXUBAFcAFICwGNMyhUQq5GdLQLj8S8xcI0dap9s2V5KnH7svBg/q2lCYNa0ixKwpZz8ynkpxLqF+nqpC7dWpgYNGvx13GsmaCTSqF9KF+oo0F+68trgWeVAFYvwVugWh3MI1SyLypcOoM3XrzNTIMCiA79+/Z1Pj1dKYU/+TSpGFNA48n+7WSNi1vlVIl+GPuSP05acj+G4DcmoKTYsSAcjxJqgBidwtfJTMhQh6K0JUlJ77aX5bff6/3wMN1KlE8Uya/0EMa3n698SZQICOfU2XybW42MqM9Afs3P47TjswapAogNkLhu/F4HFs6ztjhj/9OHnu4eZypg5FszPD7ZeuqUTJ1TE8nG1wQmS0Fc8flYwgDR6oAInc5jXVoZMLZ4woQIWcgTJgG9mmRxWCGhjOtmv5aiha5POG80zkDvglwKZTzA8QsnJ97qmO8E6S8/8sCN/ZvO4RPgwNFBCBQDY7RWE7c9UM8uRtCjhUbInSEil1RUHp1vkO4bk8DmXCuVNHR6QRH6uvVTDgXEI4dj7t2aCD9ut8lnDAkx7mCUBVt5hCP/U/m/YBL6U1BVwBs/3XoYi4NdUD40gXmuBCHzlCRwgWkYd1qMhq/VPqwO4NpeC58e/rj4Pby0ojOBg/q20JCxkfEPlzW5LgM4kP3AO8Hvhngkj/JSq35AFiRS1eZpIwBWzSuJW9M6SdJ2jWXrn1luV21al4tW1ePMpjYW06YVZBzAnS6mvVqmp0FVQF0Rj/SMGQJwrjfvx/ueqdwTI88ohLj+YsUVUAjXEWA2LMP4iykLtLxPiFzTwdO04uCqAAeRhf2AtMwhB0c1/LPo79vJg92bCBVruFbI3KLQownR4nWyy4jQOzvb/NbGfPM/QZfXaGknRKLQZj3CZkTw3wj4P2Dy+lBQVEA5dBdLS8wH/5bcWybfnVVCWl5Vy2Df//AnULT1fJlrpBG9arLpZdekiU/nnPGmvFZIvQk6QhUrVxWaFBFbtf6NqP/brmpkt16cJ22PxLx/uG95GnTTNTTEgVBAVwBJNqAF13gaggt0yWX5JYyVxaVq8oVF27FXTTjUSFXhDJgJg1vryavje0l3KpLmRDz/JWRXYXxlFP2BgIjnmhr9N8zg9oY/grYvzZrVg3yvJc4JOAcEk79S0FQAFzLJ8fVS1x2osebNQuHSu8HG0fMgzJLZj4ulAkxz3XGPyJcnrhY95bKwj5i38VZIbpnp5/COJN7I1kQFADHcWRbiHftUF8WTn/E+HW/qXpFoREKl5siZcLXfTrjoEyIeZ43Ly2JI6XQa6lGgLsU+ZbGtzf2M/vbZp1KQ577CfiFJhz6k9JVAXBmjsYc5KpWu4bGOjQkIXPiiBZ6d9a/QXizWM1D5fyDQJ48lwr7l/3M/qbzEpu1rw75TuAHwJ7ZzIG6WKZ0VAD8lBZfzUIGHbdYQYPj/JZNahmGJDQoqXebZb1hJXuV8TgC7O+nH/+dMCTzfrBYZd5fz0K2EZjzTQj8Q+moALoAfj78CKzTfc1rO73RxHrhKukJBDhnE/KqzPvBRqVoS0Kbkro20nhCNF0UwJVA833wFjCXaRBYJ2p+3Y1nHa8gSPJ+2LJqpLw9e6BcWbKI1SbTTsDR7YpWC45XLh0UwK/ReDqB5KsYN3BQG+NSbKp2XTnDMGTMM/cLtb2NV77YGWtsWiDA+4Eu1uvWriwjnmgjvF8sNKwiZPgGmjJjIZRvi/yuAPjw05NkV7TasqcIbhTp3qnhReMQGoogvZIikAOBQgUzpGuHBmLDgpBGZpyDypGXFy/4UQHwQedEH5mv+9y6axlbOtnkFtK+3e+ynEYFFYESxQpJkcL09p5eWPhRAdRCF9CDC7kjjm0RPcpwX76tRCoceATokYjzAukGhN8UAD3xjkQn0EMkmW8DOI1NDepebxj10ODj1psrSX71vxcbMI3NgUCBAvmlTcvfCE2Ic0TmvEBz4Zm4XAGcNIqnIL8pgKvRSFtLLdy807dbE6GxBzkI7rWBkZILCHAeoNN9txvuyjmUjFFEMcTdC+YOwhoIPUu5PVuz/1SMv/L04FoPlyxv4eImj5tr/Mpww8UHH2mVFIGEEaCpN123W9hDwG3mnKNqh0Irgz1JXlYABDATqF0LngfmJ556I4xJ+fLlMdxHcxln2theQv/yMRNopCIQBwL07mRxr8cgZE9G4D3K7b0qXawRH3Y+9HNxxdLaPuSEM/y05uJOL1p28ZqyIuA0AlPH9DDsR5zON9784k3nVQXAsRM3WNCwh0b5ea00sA/G+r063yE04KhetXy8rqKtFKUyAUegcqXShidieoWyAAXnrehy3HNfIfKSAqB3XvrqI3cBqHzwEVinhpjt58NvPYVKKgLxI0CvQnzjpBvyPHmyeoTKlivnrnhPk0tmi0vpqVcUQDmgwF/86QjJVRBaJoJPU83MQo58u8NyuSqoCNStXUWeH9ZJMi7jXHVMPMojdgK4GdgzSsArCoCTJBzzAxv7xBlZjvlpt20/taZQBJKKAHeq8k3AsUITySjVCoC2lXPQgHvAcY2PGjeoIfOm9Df89uXJox54gKNSkhEoVSJTlsx6XOrcYmm1j9+A4wpXkmsZubhUKwA+sdw8YXmWP9SMnpjse+qx+4x1/ltrXZPDK29ITkNFwG0E8ufPKxwK0GcknYlYKK8+ZNqCU06pVACl0Pq7wZYH7uFuuQf2biE0yFAjHyCo5AkE6HKcruAtVIYKgAZCFkTdFUmVAuCMSUM0bRa4BNiU6JevTcvfCF1yk0NuuU0TqoAikEQE8ufLIwUyeHuL2V8eCBQC5wLHTYkmTJUCoIkkvadYrn+67sayDIAK+gKBXhiaTh1jySlQAzToA3BpcMooVQqAO/lMf/lvrF5Bpo17yOAmDWtINLfcKUNPC1YEsiFQOLOAcBjwyqiuxodHskWHn3Loy6VBzoOFX0/qcSoUAHdJceLPtKHlyxYzTHtpbMFj0wQqoAh4AAEuS3e4p44ULcwJ/5gV4liB3qz6Qeq34KRTMhUAlz6qoYVc82+CMCaVLlVEKpY3fUmImYdGKgKpQoC7UStXKm3mRYhL30NRR9oG0LXdtTi2TE4IJlMBVEaFOeahRx8cxiZ6X6HDzthSGqsIeBMB7hZ8Y0o/adHY0u3ORtC71Rs8SCYnSwHwo3r8lprpOxEbzwefnnp5rKwIKALuIZAMBdAe1f8DmKow5oQHX/tDD3/Z0r77yAqaqKQI+AsBNxUAH3YaPNBr751msNDIpw3W+fv3bCr68JuhpfF+QeCmGyoIV7Ocrq9T+bmpAGjnz7V+GvzErO8VRQtK57b1hL/+MQU1UhHwGQJ0P/9k/1ZyVbniBtNjVYwm0O8F3d1zdSCGmHNRbioAy7Uc1KeF0I7acgIVVAR8hADd0q1ZOFTINavx+Y5a+UqIoRcsOsLBofvklgK4HlWnmS8/lYTD2ERPvWrkExsjjfUvApcXyC8Vyhc3OH8+/shHbQsj6Ur8eUjQbwACd8ktBVAM1eZGn0yEUYlOFR9oX1+qXlsmqoxGKAIBRIAuxGggFFEJOImHGwqA7zimrzAc9zeqV12e/Z92QtdKTjZK81IEvIoAhwCcD7BQv9aQoW9MusR3bU7ADQXQBRWnZROC6ETvPUtmDRSaTUaX0hhFIL0QeGlEZ6Fpu8VW8U3Alldsi/leFHNDAVzMXA8UAUUgJwK9Ot8hLw7/75wRKbjitALguKWJWTvoxuvBDtwNaSap8YpA+iHAt94WTWoZw98iNr847DQaTiuA5qjgreCoxIefGrB545ujymiEIpDuCFxdoaQ81KWRFCrIXcGpa61TCuASNKEc2LQ1g/q2ND7UCVklRSDQCOTOnUvKXlnUqgchV7BySgGURu2400/f6wGEkiJgBQHuGFw6Z6BwOGBF3g0ZJxQAH3ru9KMSyBOtkjSEmDmht1SrUjaaiF5XBAKFQK5cuYwhQN7Y7uzpFGMygLkF7DglqgC4zbcvasXNPlEffsRLJsY6dze6UWj1x3NlRUARsIQAh9V8vgZAms8bAucoUQXAGf9WzlVHc1IEFIEoCNCNOJ+3KNHxXU5UAVgqNU+eS4TjnVy5clmSVyFFIEgIZFyWV/Lnz5OSJudORqncDTV1TA/hpohklKdlKAJ+QoArY727xn67d6s9riuABzs2kMd7Nxc6SKSjRLcaovkqAn5FoHzZYsJNUI+ZaQAAEABJREFUcU8//rukN8E1BcDXfhr70O6Z301Lesu0QEXARwhUrVwWy4HJN45zTQFkXJZPhg/8nfHRRB/1g1ZVEQgUAq4pgEChqI1VBFxEwM2sVQG4ia7mrQg4i8B9yI5+NhE4Q4kogJ6oQsyNP4hXUgQUAecQoBmtqbMdO8XFowDosL8lChkIVgUAEJQUAb8iEI8CqIbGLgJbcvgJOSVFQBGwgMAluXNLZqEMCV8ut5AsIZF4FEBCBWpiRUARiIwAbWW2rholtWr+KrKAC1ddUQBsyIRRXaV8mWIuVFmzVATSEwF6yeauWRPX4VXQ+mlg+t9AkBg5rgBq31zJ+MhHh3vrivr6T6xzNLUiEAGBUrjWBdwHnPCEoF0FwJ/0Sig4KtHuX7/yExUejVAELCNgIvgY4uuBEyK7CqAjSqPzDwRKioAi4HcE7CoAv7dX668IeB6Bl0bcL/c24/dA3K+qKgD3MdYSFAFbCNSsVkH6dGssXTvUt5UuHmFHFQA/8VWlEl0DxlOV9E2zb/8hWbT0oyy8ftPn6dtgbVnCCNS7rao0v9P93YGOKoAn+raUdq1vS7jx6ZTBocNHZd6b/5DWXV7IwkNGzhMqhnPnfk6n5mpbfIaAowrAZ21PSnVHjn9LyNkLW7thlzTrNFq+OXgke5SeKwJJQ0AVgMtQHzp8TA5/fyxHKSdPnrnwBnA+R5xeUASShYAqgGQhHfByvjt0VF6dvlJemrT0IvP86LETAUcmZ/NtXKEdQCMb8jlEVQHkgEQvOI0AhzlvLtsojw2bKQOGvH6Reb703a06DIof8NZI2gEcN6kCiBs6TWgVgWWrPpbuf5gsx0+czpKE5+17jhPGZ4nQk6QhoAogaVBrQYqA9xBQBeC9PtEaBRiB8KZXr1pehjxyjxQpXCD8cvbjW3BhCDg/2DapArANmSZQBJKDwNUVSkrX9g2kUEF+HjBqmVUR0xWcD2ybVAHYhkwTKAKeQ+BS1Kg8+DKwLVIFYAsuFVYEPIkA7e8/QM0agG2RKgBbcKmwIuAeApFyLlGskEx+obtwn02k+AvX+Bxn4jgP2BYxoa0EKqwIKALJQyAjI5/cWf8GubJkYVcKVQXgCqyaqSLgLALVqpQTTgo6m6uIKgCnEdX8siBw4sRpOXEyqwFQFgE9sYTAiCfaGr42LQnbEFIFYAMsFbWPwMjxb8rIcW/aTxiwFKlqriqAVCEfkHL37T8sX319OCCt9V8zVQH4r898UeMzZ87JW8s2yu493/iivkGtpCqAoPa8y+3muH/oqL/Iug27opaUO3cuue7aMlI0tqlr1PQakTgCqgASx1BziBOBywvkl7mT+gq/JRFnFmmRLJWNUAWQSvQDXnauXLkMO3d+EivgUKSs+aoAUgZ9sAvm9yMH9W0phTNjbnQJNkhJaL0qgCSArEXkRKDKNaXl/xVAzK2uORPqFUcRUAXgKJyamSJgD4FUS6sCSHUPaPmKQAoRUAWQQvC1aEUg1QioAkh1D2j5ikAKEVAFkELwtehgI+CF1qsC8EIvaB0UgRQhoAogRcBrsYqAFxBQBeByL3S4t460v6dOjlKqXVdO/ji4vRQtouvgOcDRC0lDQBWAy1DTnVO3jg2k5V21snAHKIWHujQyTGFdroJm70EEvFIlVQBJ6ImGt1eTRTMezcJP9GuVhJJTVwR3+pUuVUQKZOTLUYnMQhlCZ5c5IvRC0hFQBZB0yINRIHf6TR3TI+JOvy7t6smIQW2DAYTHW6kKwOMd5Nfq5c6dW0qXKipP9m8lC6c/koV7db5DShTP9GvT0qreqgDSqju915ibbqgorZr+OgtXuaaM9yqaxBp5qShVAF7qDa2LIpBkBFQBJBlwLU4R8BICqgC81BtaF0UgyQioAkgy4FpcsBGIt/V/mrVaFi79KN7kUdOpAogKjUYoAqlH4Kfjp2T+4g/lldeWy/v/+NTxCqkCcBxSzVARcAYBflZt6/a90n/w67Jl215nMs2WiyqAbIDoqSLgFQRWr9shTduPkgPf/OBalVQBuAatZqwIZEXA7tnZsz/LsZ9Oyi+//GKW9CAEOoLXg22RKgBbcKmwIuA5BLaiRs+CF4C/AdsiVQC24FJhRcBTCOxGbeaCx4JPg22TKgDbkHkvwfnz5+XHoyfkyI/HLzLPf/75vPcqqzVyEoGXkdkocNykCiBu6LyT8JuDR6RZx9FSv9Xwi8xz/TKvd/rIqzVxVAGMm7pMFrlgrOBV8LxQr7XrP5O+T86Q9Zs/l493fHmRef7Y07OE8V6op9bBmwg4qgBWr90h0994T5at4ryENxucbrXavedbWbBkvXDGOLxtPF+8fJMwPvy6HisC4Qg4qgCY8ZvvbJSR497iobIioAh4HAHHFYDH26vVUwSSjoCXC1QF4OXe0bopAi4jYFcBfIj6TAcrpRkCH278XIY9Nz8Lz1349zRrpTYnOwJ2FQBNDZ9HJovAP4KV0gCBzZ/skSkz/yZPQwGE85hJS2XFmk+Em1LSoJm+asK2nfuwskM7H3erbVcBsDY78K81eA9YKQ0QGDdlmbw2e02OlmzYvFt6PDJFDh46miNOL1hDIB4pbgGeMG0FJtPfjCe5rTTxKABbBaiwIqAI2EOg24BJMmvBOnuJ4pRWBRAncJpMEXAagX37D0mXPq/KmnU7jV2ATucfKT9XFMD+A4fl1ekr5Tt9dYyEuV5TBCIi8P2Rn2TGG+/Jt99Zml6bhUy2gBMiVxTAF3u/lSdGzJGvv/k+ocppYncR4Gahnbv2C288d0sKZu4utfon5EtT2+EI3wcnRK4ogIRqpImThgCdTTTtMEpoMpy0QrWgRBHYiAxuBP8TnDC5pgA4k9ltwGTdF5BwF7mTATcJcccgdxK6U4LmagcBOv7k82KSZj7i+4Mdo0QUwHOoxXvgiMTXy00f/0tefPVtmb1gbUQZvZgaBLhZa9T4t2Tdhl1y+vTZ1FRCS72IAJ+P8VOXC5+XixcjH+zH5Y/BjlEiCmA2amE6CbHyvW0yddZq4U7Bs2fPIYlSqhH4cNNuWbJis2k1SpUoLHfWry4Zl+U1lVWBrAhYOePzQEMrPh9uuPy2UodEFADz5yzfIR7EYj78A4a8LsdPxOW1KFbWGmcTAb7y03OQWbIihQtI88Y3yeQXekiJ4plm4hofBwJ8HmhoxefDQvKDkOHzhsA5SlQBvIyqjAQr+QSB/oNnyPS5UUduF1vR+8HGMmJQ24vnepByBAajBnzeEDhHiSqAH1CVeeAe4OPgqLRn30Hp+NDLsv3Tr6LKaITzCIyb8o6Q93xJ/MfLu+9vN/wHxirpmUFtpHPbevrLHwukBOPWb/rceB4OHvrRLCf+8vP5WgxBPm8InKNEFQBrwid6Pg7Ggb8AR6Sjx07K0ne3yKHvj0WM14vuIMAvysycv1ZoW/7XtzfIYQv4161dRa6uUNKdCgUgVytN/Pe3R4zn4eTJM7HE+TzxV38+hGy7/EYaU3JCAbAQaqYncbANrOQxBD7a8oU8P2GJnDoVe8a/QEY+qXdbVSmcmeGxFqRXdfbu+062f8bfTdN28Xl6BlJ8vhA4T04pAOdrpjkmHYFKFUvJmkVDpWa1CkkvO0gF0m/mkJEcOae+1U4rgAFo0kRwVOo2YJJMnL4yarxG2EOgReOb5e3ZA+XyAvntJcwm3eHeOvLGlH7Zruqp0wjYuP9pZzPA6fKz5+e0AtiLAmKOVbhPgBqQ3zuHrFKCCBQtcrnUrV1ZRj/VUapdVy6u3NrfU0d6/Pd/SeVKpeNKr4n+g4DZEb00W9zs8zXy4vOEwD1yWgFYqun6Tbtl8YpNlmRVyByBQgUz5KEujaR7p4ZS4/qrzBNkk7iz/g3G2D/bZT1NHQLLUPROsOvkhgI4glrHfAtAvJILCPTtfpd0aVdPSha3ZriTK1cuKXNlUQwf8rlQG80yHIEzZ84J9/ufOh1z1j+UhLY1SRknu6EAOAfQLdQSDZOLQK/Od8jUMT0tFVrw8vyyFPMHLRrXsiSvQvEjsGv3Abm9xTDZuPVf8WfiQko3FADtfT9EXTuC94AjEocBHR8aLwetOT+ImIdezIlA/vx55dabK8nC6Y+Y8uyJfaQSZv7z5r00Z0Z6xTYC0RKs+mC79P2f6XLgmx+Em+SiyeE6n5dWCLeDk0JuKABW/DD+vQ2OauZEm/QFSzbIs2MXydbtrs91oCrBoWJXFJJWTX9tync3ukkyMvT13807g9/KHDd1mdDN17lzP5sVxeeFnkD5/JjJOhLvlgKwVDluRR07+R2Zu/DvsnuPThtYAk2FfIEAH/aNW7+QiTPeFX4uz6uVdlMB/IJG0+7XdNaDe9Nf/tNyiCspAv5HgA//1//+Xh7oN1GWr7a8fZ9DZz4vSQXATQVA32WcDOSSRlIbpYUpAslGILw8DmmbdRpt962W9v58XsKzcv3YTQVwHrWn3zJLe5hXrPlEho7yhnkk6q2kCMSFAMf8g/84z9j1arb3AgWcAD8K7gIeC+bzgiB55KYCCLViLQ7ICKLTp//8Wt5apsZB0RHSGK8jwNl+WrlafO3fh/bwO5vkGTj+CJx0SoYC+BNaNRq8CxxzGvTkqTPGigAdikJWSRHwFQKc7bc44ccZ7wVo3MPgw+CUUTIUABvHeQCObzgvwPOIzJWA+q2GG0ogooBeVAQ8iEAcVeKvPj38xJHU2STJUgDciE4Honej+lvBEen8+V8MbzXnznH6IKKIXlQEPIcAbVqadRwla9fzJde0enTrTWtZjv9Nhd0WSJYCYDvoMmwdDrhXAEF0os+6Dzd+Hl1AYxQBDyHAyT4+/CbelvjaTxv/Raj6l2BPUDIVQKjBnBD8LHQSKeT30abM/Jus36RKIBI+es07CHCDD1ewzppb+YUUgGcefqKYCgUwBAXPBcek12avkT+Oo1VkTDGNVARSisCqtTuk56NT5ERsl/c0hqORD43jUlrf7IWnQgFkr4OeKwLpjsBbaCB9rFMJ4NA7lCoFwHHQODMYNn+yRx4dNlMOHT5qJqrxikDSEeAnvabOXGWlXK5+/RuC+gYAEEg0kJ6Cg1fBUZ/ur74+LK/NXi1cX6UrMcgqKQKeQWDDli+M7yuaVGgF4skIvEepegMgEtvx7wlwTFPhH44cl2de+Kts20nDKUgrKQIeQIAOPr6z9mY6G9WdA/YkpVIBeBIQrZQiYAWBtt3HyuwFXNW2Iu1dGd8ogMEj3xBaCfYfTLNp7wKqNUtvBLjTj/chrVZNWspxP61faQVrIpq66FQrgJNo+nDwBnBM2vHZfnnv7ztl/uL1QiXA/dYxE2ikIuAgAnRjz/tuxIsLjfuQX/Y1yf4c4jeCvwV7llKtALg+Og3ozARvA5sSH3x6EZr35j/ki72exta0LSrgfQS4vr9izScy+c9/E953C5asNypt8u8Q4mO6xEO8JyjVCiAEwngcjAEfAFuiPwz9s9BiUJcILcGlQnEgwEeDG6MAAAkkSURBVId/87Y90rXfRNmwebfVHGjq/i6EO4H3gj1NXlEABMm2RxS6ERs5njYWTK6sCDiLwNoNu6Rdj3HCzT42cuZOP274sZEkdaJeUgDHAAOnVS27ReYSIYcCPR6ZLMePn0JyJUXAGQQ45h8ycp5wyGniyjt7gXwD8M3Y1EsKgEDSKIgbALhdcgsvmDGNhTgxOG7qMp0TMANL4y0hMH/xh/L6vPejvvbHyGQx4vhNDAT+IK8pgBBqr+CAnoTWICSgMX/efzhyXJ7837ky56/rZO++75BESRGwjwA9UdF/P2f63//Hp1Yz4C4/3qfkUUjkK/fWXlUAwFFewb8G4HZggowgNvGVjT7ZYktprCIQGQGu7TdoPVw+3mFrxy7X+XmfkjmEjZy5R696WQGEIDuAg6bg1WBTmjh9pXQbMMlUTgUUgXAEZs1fK7TuC79mcszdfTUhMxTsW/KDAjgLdPk+9iNCU+K315et+lieGDHHmMAxTaACgUdg9oK1xjr/P7/ghr3YcCCW64Gc5ec2QG5q+wrXfEt+UAAhcAm4qcUghTlzO3bKO8KZXLoXW7v+M15WVgSyIHDmzDnhhN+EaSvFxph/PzKhD38a++DQ3+QnBUBjIa4OWJoPOHnyjDw1+i/yQN9X5aVJ78iBb76X8+fV2ai/b1fnak8jn88+/1r6D37dypbeUMFcpbJ0/4USeD30kwIglrPwjxssEFint5ZvxPhunBz7KeZigvUMVdL3CKxet0NubzEMPww/2GlLXPefnQKSLes3BcC9Ax8CJBoL7UFoic6e/Vk+2fmldOg13vhkk6VEKpS2CMxd+HcZ/sJf5eixk/LLL6ZOeg4CiB7gVuAJ4OPgtCG/KQACfxj/aCw0CiGVAQJzYmcvfXeLPD9hiXCt1zyFSqQrAp/tPmDVyIeTR88Ch3lg3nPbEaYV+VEBhDqAa33cRchOCl0zDbmBiBODVAKcHDx1ii8VpslUIE0Q4H5+i8ZinO3n/pSxaLqlFSjI+Y78rAAINo2F6E+A9tdkLhnyekymEqDBx90dRgmXfjgbHDOBRvoeAdrz/3j0hPQeNM3YRWrSIDrzeAEydGGPIH3J7wqAPUNLrPo4IK9FaJlo+tmu5zhZtirq18os56WC3kaAVn7NOo62+t1JrvPz1/9io9L1IB0UAKdxaZBBfgYd1QU8EmxK58//Ip/+82sZ/fJioTGIaQIV8B0CdNvdpc+r8tjTs2T95s/FgicftpGv/2mxzs/GxOJ0UADh7aO58AxcmA6mN9bvEZrSug27hPMC4bxz137TdCrgTQS4fz+8LznkW7x8k3A1yKTGvF9476TVWn+sNqebAgi1dRcOeoJXgtmpCGLTyve2GUZDNBwiT5uzxnhd5KRRiGlhGDsXjU01Anz4l6zYfLEvqdwt1uk7yPF+eQAh7x8E6U/pqgDYc5zIodEQ5wh4botffm254YWYHmBDTA9EtjJR4aQjwF9+Ou+Mo2CO+Xm/5EiazhfSWQGw36gEuEpgaU6ACUJ86tRZ4axxOP/5Lx/kUAojx3F5OJRKw1QgwF/9Zh1HGX0zcca7Vsf54VXl/cFZf94v4dfT/jjdFQA7kK9zc3Ew7ALvRRgXcQhA1+ThTKuylyYtlVNqTxAXpokm4vCMSvjd97cb7rq//Ipv8pZzpW34S5Dm/fEFwsBREBQAO5UrBE/jgGzbeAjpohKdRzw7dpEsWLJBFi39yGAaGEVNoBGOIbBt5z55bfYaw1336dOWTEDCy/43ThaAaenH+wOHwaOgKIDwnqVxB2d6HbPp/u7QUen0+5eldZcXDB70zBxj+EDjk/CC9ThxBM6d+1mO/Hjc4AnTVsj4qbanePiaT6OxVagNXXfHfGWATFpTEBUAO5TbigfwwA3e+PG/jJ1mu3YfcCP7QOe5ceu/pGbDQQbPiu/bfJzooycf1/rfTx0UVAVA227+dHRBZ4V4No4dIb6Ocq/5oBFzRIcD8UO6+ZM9QiOecB723HzhOJ987Cd+Wc5y/vsg+XvwGjCd/gX6lx8YGBRUBcDGf4V/NBoK8SScc0IonOnmGZftE41OaHwyYdpK4SRhdmac/VzTN8WWbXty4PQKlmJpxBPOy1fHNVzfCeTGg6eBfeOzH3V1nYKsALKD+z4u8LUwnF/ENW4UCOfduGaZ6Kp8wJDXJTu/OPFt4Qy2VeZypOVCPSxIm/xIbZ6N1/nsGHGCL4Gm/Iy0XAFi33GN/3mcc9YfgTUKgpQqgNi9zNfFGyESzhxD4lJixO3IN2Isa5VXr92RWIEeSd1twGSJ1Gb6aXC4iseQHz33su+ewrFSBARUAUQAxeQSf1G489DWm4BJnqbRg0e+IX61RFy2aqthpEOLSv76mzY2MQGu8LB/miGbpPYRyvMdqQKw32WcQHwPyfirwm2jjk0eIs+otOOz/YaXY5q5+o1ffPVtw0iHBlQuD2X4NSmu8LB/1gFMx5Z6kVdakiqA+LuVD/5YJJ8KXnSBaVyCQ3eIv55jJ79jGL74KeRGK3cQMXLl7H4I/8m4sh6cMAUlA1UAifc0tyC3RjZkrhocwbGSOwjQLTdNucN5Hooi9uQNOFaygYAqABtgWRAdDBmOQREouYAAZ/M5vg/nkS6UE5gsVQE429U0LuEYlG7LszOXF3VMah1vjuezYzgGyWnEE870Eo3LSvEgoAogHtRip+HaM/cIZ2e+qo5D0nBDo1jHWyCb7nQaDXwNHAmH13E9O4ZJccuNcgNDqgCS19XcGPAkiuObgBXmL2C63vAcw9PGgh54omFCwyzApeQmAqoA3EQ3sbzp8pxzConl4s3UnCdpgKo1B6tpLkBIFakCSBXy1srlCgN3rqUbc57EGgIq5SoCqgBchTfhzLnsxd0v6cae/dVPuMd8loEqAJ91mFZXEXASAVUATqKpeSkCPkNAFYDPOkyrqwg4iYAqACfR1Lx8jUAQK68KIIi9rm1WBC4goArgAhAaKAJBREAVQBB7XdusCFxAQBXABSA0CDYCQW29KoCg9ry2WxEAAqoAAIKSIhBUBFQBBLXntd2KABBQBQAQlIKNQJBbrwogyL2vbQ88AqoAAn8LKABBRkAVQJB7X9seeARUAQT+Fgg2AEFv/f8BAAD//9/tEQQAAAAGSURBVAMAv6CHpmF8YJMAAAAASUVORK5CYII="
+              id="uploadPreview">
+            <div class="drop-area-upload" for="uploadFile">
+              <label for="uploadFile" class="drop-area-upload-btn btn">choose file</label>
+              <label id="uploadFileName" class="drop-area-upload-filename">or drop here</label>
+            </div>
+          </div>
+        </label>
+        <div class="row control-group">
+          <input class="control control-group-l control-has-icon control-grouped-left" type="url" required=""
+            placeholder="enter a url to upload" id="uploadUrl">
+          <button type="submit" class="btn control-icon control-grouped-right" id="uploadUrlBtn"><i
+              class="jam jam-upload"></i></button>
+        </div>
+        <p id="uploadError" class="error-message"></p>
+        <p class="help">note: url upload might not always <a data-href="https://t.co/PLJtS6mKmO" target="_blank"
+            class="e" href="https://t.co/PLJtS6mKmO">work</a> cus some sites don't like it when you direct link images
+          from them</p>
+      </div>
+    </section>
+
+    <section class="output content">
+      <div class="content-heading">output</div>
+      <figure class="preview-image-container">
+        <img width="112" height="112" class="preview-image" id="result">
+        <div class="help output-info" id="info">...</div>
+      </figure>
+      <p class="help">
+        ps: save the exported
+        gif if you want to share it, using the link won't work cus it only exists in your browser
+      </p>
+      <p class="help">pps: if there's weird green dots in the export try a different browser</p>
+    </section>
+
+    <section class="content">
+      <div class="content-heading">
+        <h2>About Petpet GIF Generator</h2>
+      </div>
+      <p>
+        Petpet GIF Generator is a free online tool that lets you create the popular "pet-pet" animated GIFs, also known as petting GIFs and head pat GIFs, from any
+        image. These animations show a hand affectionately patting the subject of your image, creating a cute and
+        wholesome effect that's perfect for social media, messaging apps, and forum reactions.
+      </p>
+
+      <div class="content-heading">
+        <h2>Types of Petpet Animations We Create</h2>
+      </div>
+      <div class="content-item">
+        <h3>Petting GIFs</h3>
+        <p>
+          Our petting GIFs feature a gentle hand motion that caresses the subject of your image, creating a warm and loving effect. Perfect for showing affection to your favorite characters, pets, or friends in a fun animated format.
+        </p>
+      </div>
+      <div class="content-item">
+        <h3>Head Pat GIFs</h3>
+        <p>
+          Head pat GIFs showcase a playful hand motion that pats the top of your subject's head, conveying approval, encouragement, or simple affection. These animations are ideal for reactions, compliments, or just spreading positivity.
+        </p>
+      </div>
+
+      <div class="content-heading">
+        <h2>How to Make a Petpet GIF</h2>
+      </div>
+      <ul>
+        <li><strong>Choose an image:</strong> Upload any image from your device by clicking the upload area or dragging
+          and dropping your file. Square images work best, but any image will be automatically adjusted.</li>
+        <li><strong>Customize your animation:</strong> Use the Advanced Options to adjust the resolution, animation
+          speed, and background color to perfect your creation.</li>
+        <li><strong>Download and share:</strong> Once your GIF is generated, download it with a single click and share
+          it anywhere you like - social media, messaging apps, or forums.</li>
+      </ul>
+
+      <div class="content-heading">
+        <h2>Petpet GIF Generator Common Questions</h2>
+      </div>
+      <div class="faq-item">
+        <h3>Q: Can I use Petpet GIF Generator for any image?</h3>
+        <p>Yes! You can upload any image you like. The generator works best with faces or objects that would look cute
+          being petted, but feel free to experiment with any image.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Q: Is there a limit to how many GIFs I can create?</h3>
+        <p>No, you can create as many pet-pet GIFs as you want, completely free.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Q: What are some creative ways to use pet-pet GIFs?</h3>
+        <p>Pet-pet GIFs are perfect for reactions in chats, Discord servers, forum posts, or social media
+          comments.<br />
+          They're a fun way to show affection or approval for something someone has shared.
+        </p>
+      </div>
+      <div class="faq-item">
+        <h3>
+          Q: Can I use this Petpet GIF Generator on mobile devices?
+        </h3>
+        <p>
+          Yes! Our Petpet GIF Generator is fully optimized for mobile devices. You can upload images from your phone's
+          camera or gallery, adjust all settings using touch controls, and download the generated Petpet GIF directly to
+          your device. The position mode even works with touch gestures.
+        </p>
+      </div>
+      <div class="faq-item">
+        <h3>
+          Q: What image formats are supported and what are the size limits?
+        </h3>
+        <p>
+          We support all common image formats including PNG, JPG, JPEG, and GIF for Pet Pet Generator. The maximum file
+          size is 10MB for optimal performance. For best results, use square images with good contrast and clear
+          subjects. The Pet Pet Generator will automatically resize your image to the selected output size.
+        </p>
+      </div>
+      <div class="faq-item">
+        <h3>
+          Q: Is my data safe? Do you store my images?
+        </h3>
+        <p>
+          All image processing happens directly in your browser using client-side JavaScript. The generated Petpet Gif Generator
+          only exist in your browser's memory until you download them.
+        </p>
+      </div>
+      <div class="faq-item">
+        <h3>
+          Q: What's the difference between petting GIFs and head pat GIFs?
+        </h3>
+        <p>
+          Petting GIFs typically feature a gentle caressing motion across the subject, while head pat GIFs specifically target the top of the subject's head with a playful patting motion. Both create wholesome, affectionate effects but with slightly different motions.
+        </p>
+      </div>
+      <div class="faq-item">
+        <h3>
+          Q: Can I create both petting GIFs and head pat GIFs with this tool?
+        </h3>
+        <p>
+          Yes! Our generator creates versatile petpet animations that work perfectly as both petting GIFs and head pat GIFs. You can adjust the positioning and scale to customize the effect for your specific needs.
+        </p>
+      </div>
+
+       <div class="content-heading">
+        <h2>Advanced Technical Features of Our Petpet Gif Generator</h2>
+      </div>
+      <div class="content-item">
+        Client-Side Processing
+        All Petpet Gif Generator generation happens in your browser using advanced JavaScript algorithms, ensuring maximum
+        privacy and speed.
+      </div>
+
+      <div class="content-item">
+        High-Quality Petpet Gif Generator Engine
+        Our Petpet Gif Generator uses optimized frame interpolation and smoothing techniques to create fluid,
+        professional-quality Petpet Gif Generator animations.
+      </div>
+
+      <div class="content-item">
+        Responsive Design
+        The Petpet Gif Generator tool automatically adapts to different screen sizes and devices, making it easy to create Pet
+        Pet GIF on any device.
+      </div>
+
+      <div class="content-item">
+        Real-Time Preview
+        See your Petpet Gif Generator animation changes instantly with our live preview system, allowing for precise adjustments
+        and perfect Petpet Gif Generator results.
+      </div>
+
+      <div class="content-heading">
+        <h2>Creative Uses for Petpet Gif Generator: Endless Possibilities</h2>
+      </div>
+      <div class="content-item">
+        Our Petpet Gif Generator maker opens up a world of creative possibilities for creating petting GIFs and head pat GIFs. Here are just some of the ways you can use your custom creations:
+
+        <h3>Social Media Content</h3>
+        <p>
+        Create engaging posts for Instagram, Twitter, TikTok, and other platforms. Our petting GIFs and head pat GIFs are perfect for adding personality to your social media presence, whether you're sharing funny moments, showing affection for characters, or reacting to trends.
+        </p>
+
+        <h3>Messaging and Communication</h3>
+        <p>
+        Send personalized petting GIFs and head pat GIFs to friends and family. Use head pat GIFs to show approval or encouragement, and petting GIFs to express love and affection. These animated messages convey emotions in a fun way that text alone can't match.
+        </p>
+
+        <h3>Digital Art and Design</h3>
+        <p>
+        Incorporate our petting GIFs and head pat GIFs into your digital artwork, website designs, or graphic design projects for a touch of whimsy and charm. These animations add an interactive element that engages viewers and brings your creations to life.
+        </p>
+
+        <h3>Content Creation</h3>
+        <p>
+        Use our Petpet Gif Generator to create unique petting GIFs and head pat GIFs for blogs, YouTube videos, or any other creative platform where engaging visuals are key. These animations are perfect for reaction segments, character highlights, or just adding a fun twist to your content.
+        </p>
+      </div>
+
+      <div>
+        <h2>Petpet GIF Generator Effect Preview</h2>
+        <div class="preview-image-container">
+          <img width="112" height="112" class="preview-image" id="preview"
+            src="https://cdn.wwkejishe.top/wp-cdn-02/2025/20251116142445613.gif" alt="Petpet GIF Preview">
+        </div>
+      </div>
+    </section>
+
+
+    <footer class="footer help">
+      <div>
+        Create and share your own petpet animations for free!
+        <span class="separator">|</span>
+        templates: <a href="https://www.wangdu.site/petpet/img/template.gif" target="_blank">gif</a>, <a
+          href="https://www.wangdu.site/petpet/img/sprite.png" target="_blank">sprite</a>
+        <span class="separator">|</span>
+        gifs are generated using <a href="https://github.com/jnordberg/gif.js" target="_blank">gif.js</a>
+        <span class="separator">|</span> &copy; 2025 Petpet Gif Generator All rights reserved.
+      </div>
+      </a>
+      <br>
+    </footer>
+  </main>
+
+  <script src="./assets/requestInterval.js"></script>
+  <script src="./assets/gif.js"></script>
+  <script src="./assets/main.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4173113313418612"
+    crossorigin="anonymous"></script>
+  <!-- 横向广告 -->
+  <ins class="adsbygoogle" style="display:inline-block;width:1200px;height:90px"
+    data-ad-client="ca-pub-4173113313418612" data-ad-slot="5097287469"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+
+</body>
+
+</html>
