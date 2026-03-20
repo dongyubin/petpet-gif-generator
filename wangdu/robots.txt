@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.wangdu.site/petpet-gif-generator/sitemap.xml
+
+Crawl-delay: 1
