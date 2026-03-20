@@ -1,9 +1,13 @@
 {
-  "name": "",
-  "short_name": "",
-  "background_color": "#FFFFFF",
-  "theme_color": "#FFFFFF",
+  "name": "Petpet GIF Generator",
+  "short_name": "Petpet",
+  "description": "Create adorable petting GIFs and head pat animations from any image",
+  "background_color": "#fff5d3",
+  "theme_color": "#ffeaa8",
   "display": "standalone",
+  "orientation": "portrait-primary",
+  "start_url": "/",
+  "lang": "en",
   "icons": [
     {
       "src": "/favicon-36x36.png",

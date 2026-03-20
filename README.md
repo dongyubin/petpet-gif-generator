@@ -1,6 +1,62 @@
-# Petpet Gif Generator - 在线宠物抚摸动画GIF生成器
+# Petpet GIF Generator
 
-## 项目介绍
+Create adorable petting GIFs and head pat animations from any image. Free, fast, and easy to use online tool.
+
+## Features
+
+- ✅ **Free to Use** - No registration required
+- ✅ **Multiple Formats** - Support for PNG, JPG, JPEG, and GIF
+- ✅ **Customizable Animation** - Adjust speed, size, squish factor, and flip
+- ✅ **Mobile Friendly** - Works perfectly on all devices
+- ✅ **No Watermarks** - Clean exported GIFs
+- ✅ **Client-Side Processing** - Your images are private and secure
+
+## How to Use
+
+1. **Upload an Image**: Click the upload area or drag and drop your image file
+2. **Customize**: Use the preview controls to adjust animation settings:
+   - **Adjust Mode**: Move your image to perfect position
+   - **Flip**: Horizontally flip your image
+   - **Size**: Adjust the image scale
+   - **Squish**: Control the animation squish effect
+   - **Speed**: Change animation speed (FPS)
+3. **Export**: Click "Export" to generate and download your GIF
+
+## Supported Image Formats
+
+- PNG
+- JPG/JPEG
+- GIF
+- Maximum file size: 10MB
+
+## FAQ
+
+**Q: Can I use Petpet GIF Generator for any image?**
+A: Yes! You can upload any image you like. The generator works best with faces or objects that would look cute being petted.
+
+**Q: Is there a limit to how many GIFs I can create?**
+A: No, you can create as many pet-pet GIFs as you want, completely free.
+
+**Q: What are some creative ways to use pet-pet GIFs?**
+A: Pet-pet GIFs are perfect for reactions in chats, Discord servers, forum posts, or social media comments.
+
+## Privacy Policy
+
+All image processing happens directly in your browser using client-side JavaScript. Your images are never uploaded to our servers. The generated GIFs only exist in your browser's memory until you download them.
+
+## Contributing
+
+Found a bug or have a feature request? Please open an issue on GitHub.
+
+## License
+
+This project is licensed under the MIT License.
+
+## SEO Keywords
+
+Petpet GIF Generator, Petting GIF Maker, Head Pat GIF, Animated GIF Creator, Online GIF Generator, Pet Animation Tool, Free GIF Creator, Discord GIF, Reaction GIF, Custom GIF Maker
+
+## 项目介绍 (中文)
 
 Petpet Gif Generator 是一个免费的在线工具，允许用户从任何图像创建流行的"pet-pet"动画GIF，也称为宠物抚摸GIF和头部轻拍GIF。这些动画展示了一只手亲切地拍打您图像中的主体，创造出可爱而健康的效果，非常适合社交媒体、消息应用和论坛反应。
 

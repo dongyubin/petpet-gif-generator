@@ -636,7 +636,7 @@ const g = { ...DEFAULTS };
 
     // Load sprites
     $hand.src = "./img/sprite.png";
-    imageLoader.loadImage("./img/sample.png");
+    imageLoader.loadImage("./img/doro-meme.png");
 
     // Play animation once everything loads
     window.addEventListener("load", () => animation.play());

@@ -5,17 +5,18 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="emotion-insertion-point" content="">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <meta name="description"
     content="Petpet Gif Generator - Create adorable petting GIFs and head pat GIFs online. Upload any image and generate cute petting animations. Free, fast, and easy to use.">
   <meta name="theme-color" content="#ffeaa8">
   <meta property="og:title" content="Petpet Gif Generator - Petting GIF & Head Pat GIF Maker">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.wangdu.site/petpet/">
+  <meta property="og:url" content="https://petpet-gif-generator.wwkejishe.top/">
   <meta property="og:image" itemprop="image" content="https://www.wangdu.site/petpet/img/pet.png">
   <meta property="og:description" itemprop="description"
     content="Petpet Gif Generator - Create adorable petting GIFs and head pat GIFs online. Upload any image and generate cute petting animations. Free, fast, and easy to use.">
   <title>Petpet Gif Generator - Create Petting GIFs & Head Pat GIFs</title>
+  <link rel="canonical" href="https://petpet-gif-generator.wwkejishe.top/" />
   <link rel="icon" href="./img/favicon.ico">
 
   <link rel="apple-touch-icon" sizes="57x57" href="./img/favicon-57x57.png" type="image/png" />
@@ -32,6 +33,29 @@
   <link rel="icon" sizes="192x192" href="./img/favicon-192x192.png" type="image/png" />
   <link rel="icon" sizes="512x512" href="./img/favicon-512x512.png" type="image/png" />
   <link rel="manifest" href="./img/manifest.json" />
+
+  <!-- WebApplication Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Petpet GIF Generator",
+    "description": "Create adorable petting GIFs and head pat animations from any image. Free, fast, and easy to use online tool.",
+    "url": "https://petpet-gif-generator.wwkejishe.top/",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Any",
+    "permissions": "storage",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Petpet Generator"
+    }
+  }
+  </script>
   <meta name="theme-color" content="#FFFFFF" />
   <meta name="msapplication-TileColor" content="#FFFFFF" />
   <meta name="msapplication-TileImage" content="/favicon-512x512.png" />
@@ -41,10 +65,20 @@
   <link href="https://unpkg.com/sanitize.css/forms.css" rel="stylesheet">
   <link href="https://unpkg.com/sanitize.css/typography.css" rel="stylesheet">
 
+  <!-- Performance Optimization -->
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- DNS Prefetching -->
+  <link rel="dns-prefetch" href="//www.google-analytics.com">
+  <link rel="dns-prefetch" href="//googleads.g.doubleclick.net">
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+
   <!-- External -->
   <link rel="stylesheet" href="https://unpkg.com/jam-icons/css/jam.min.css">
   <link
-    href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@700&amp;family=Work+Sans:wght@400;600&amp;display=swap"
+    href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@700&family=Work+Sans:wght@400;600&display=swap"
     rel="stylesheet">
 
   <!-- CSS -->
@@ -182,9 +216,210 @@
       }
     }
   </style>
+  <style type="text/css">
+    /* 图片墙样式 */
+    .image-wall {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.618em;
+      margin-bottom: 1em;
+      padding: 1em;
+      border-radius: 0.328em;
+      background: var(--preview-bg);
+      border: 1px solid var(--input-border);
+    }
+
+    .image-wall-item {
+      cursor: pointer;
+      border-radius: 0.328em;
+      transition: all 0.2s ease;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      width: calc(25% - 0.5em);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .image-wall-item:hover {
+      background: var(--btn-bg);
+      border-color: var(--btn-border);
+      transform: scale(1.05);
+    }
+
+    .image-wall-image {
+      width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5em;
+      background: var(--preview-bg);
+    }
+
+    .image-wall-item img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .image-wall-desc {
+      padding: 0.3em;
+      text-align: center;
+      font-size: 0.8em;
+      color: var(--txt-light);
+      border-top: 1px solid var(--input-border);
+    }
+
+    /* 移动端响应式 */
+    @media only screen and (max-width: 40em) {
+      .image-wall-item {
+        width: calc(33.33% - 0.4em);
+      }
+    }
+
+    @media only screen and (max-width: 30em) {
+      .image-wall-item {
+        width: calc(50% - 0.3em);
+      }
+    }
+  </style>
+  <!-- HowTo Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Create a Petpet GIF",
+    "description": "Learn how to create adorable petting GIFs using our online generator",
+    "totalTime": "PT5M",
+    "estimatedCost": {
+      "@type": "MonetaryAmount",
+      "currency": "USD",
+      "value": "0"
+    },
+    "supply": [
+      {
+        "@type": "HowToSupply",
+        "name": "Image file"
+      },
+      {
+        "@type": "HowToSupply",
+        "name": "Web browser"
+      }
+    ],
+    "tool": [
+      {
+        "@type": "HowToTool",
+        "name": "Petpet GIF Generator"
+      }
+    ],
+    "steps": [
+      {
+        "@type": "HowToStep",
+        "name": "Choose an image",
+        "text": "Upload any image from your device by clicking the upload area or dragging and dropping your file. Square images work best, but any image will be automatically adjusted.",
+        "image": "https://petpet-gif-generator.wwkejishe.top/img/sprite.png"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Customize your animation",
+        "text": "Use the preview controls to adjust the animation speed, size, squish factor, and flip options. Enable adjust mode to position your image manually.",
+        "image": "https://petpet-gif-generator.wwkejishe.top/img/preview-controls.png"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Export your GIF",
+        "text": "Click the export button to generate and download your petpet GIF. The animation will be optimized for web sharing.",
+        "image": "https://petpet-gif-generator.wwkejishe.top/img/export-button.png"
+      }
+    ]
+  }
+  </script>
+
+  <!-- FAQ Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can I use Petpet GIF Generator for any image?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! You can upload any image you like. The generator works best with faces or objects that would look cute being petted, but feel free to experiment with any image."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is there a limit to how many GIFs I can create?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, you can create as many pet-pet GIFs as you want, completely free."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are some creative ways to use pet-pet GIFs?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pet-pet GIFs are perfect for reactions in chats, Discord servers, forum posts, or social media comments. They're a fun way to show affection or approval for something someone has shared."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use this Petpet GIF Generator on mobile devices?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! Our Petpet GIF Generator is fully optimized for mobile devices. You can upload images from your phone's camera or gallery, adjust all settings using touch controls, and download the generated Petpet GIF directly to your device."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What image formats are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We support all common image formats including PNG, JPG, JPEG, and GIF. The maximum file size is 10MB for optimal performance. For best results, use square images with good contrast and clear subjects."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data safe? Do you store my images?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "All image processing happens directly in your browser using client-side JavaScript. The generated GIFs only exist in your browser's memory until you download them."
+        }
+      }
+    ]
+  }
+  </script>
+
   <script>
     /* change theme */
     let theme = localStorage.getItem("theme"); theme || (theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"), document.documentElement.setAttribute("data-theme", theme), document.addEventListener("DOMContentLoaded", () => { document.querySelectorAll("a.e").forEach(x => { x.href = x.dataset.href }); const e = document.getElementById("color-theme"); e.checked = "dark" == theme, e.addEventListener("change", t => { theme = e.checked ? "dark" : "light", document.documentElement.setAttribute("data-theme", theme), localStorage.setItem("theme", theme) }) });
+
+    /* 图片选择函数 */
+    function selectImage(element, imageSrc) {
+      const imageLoader = petpet ? petpet.imageLoader : null;
+      const preview = document.getElementById('uploadPreview');
+      const dropArea = document.getElementById('dropArea');
+
+      if (imageLoader) {
+        // 添加选中效果
+        document.querySelectorAll('.image-wall-item').forEach(item => {
+          item.style.background = 'var(--input-bg)';
+        });
+        element.style.background = 'var(--btn-bg)';
+
+        // 加载图片
+        imageLoader.loadImage(imageSrc);
+
+        // 更新文件名显示
+        document.getElementById('uploadFileName').title = imageSrc.split('/').pop();
+        document.getElementById('uploadFileName').innerText = imageSrc.split('/').pop();
+      }
+    }
   </script>
 </head>
 
@@ -265,6 +500,30 @@
 
     <section class="upload content">
       <div class="content-heading">upload</div>
+
+      <!-- 图片墙 -->
+      <div class="content-heading">Quick Selection</div>
+      <div class="image-wall">
+        <div class="image-wall-item" onclick="selectImage(this, './img/sample.png')">
+          <div class="image-wall-image">
+            <img src="./img/sample.png" alt="Sample character image for petpet GIF generation" loading="lazy">
+          </div>
+          <div class="image-wall-desc">Sample</div>
+        </div>
+        <div class="image-wall-item" onclick="selectImage(this, './img/doro-meme.png')">
+          <div class="image-wall-image">
+            <img src="./img/doro-meme.png" alt="Doro meme character for petpet GIF animation" loading="lazy">
+          </div>
+          <div class="image-wall-desc">Doro Meme</div>
+        </div>
+        <div class="image-wall-item" onclick="selectImage(this, './img/gugugaga.png')">
+          <div class="image-wall-image">
+            <img src="./img/gugugaga.png" alt="GuGu GaGa meme character for petpet GIF animation" loading="lazy">
+          </div>
+          <div class="image-wall-desc">GuGu GaGa</div>
+        </div>
+      </div>
+
       <div class="upload-preview">
         <label class="drop-area preview-image-container" id="dropArea" for="uploadFile">
           <div class="drop-area-input">
@@ -466,7 +725,7 @@
         <h2>Petpet GIF Generator Effect Preview</h2>
         <div class="preview-image-container">
           <img width="112" height="112" class="preview-image" id="preview"
-            src="https://cdn.wwkejishe.top/wp-cdn-02/2025/20251116142445613.gif" alt="Petpet GIF Preview">
+            src="https://cdn.wwkejishe.top/wp-cdn-02/2025/20251116142445613.gif" alt="Example petpet GIF animation showing hand patting motion">
         </div>
       </div>
     </section>
@@ -490,6 +749,16 @@
   <script src="./assets/requestInterval.js"></script>
   <script src="./assets/gif.js"></script>
   <script src="./assets/main.js"></script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4173113313418612"
     crossorigin="anonymous"></script>
   <!-- 横向广告 -->
