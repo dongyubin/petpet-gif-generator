@@ -12,7 +12,7 @@ const OUT_SIZE = 112;
 const CACHE_SIZE = 256;
 const DEFAULTS = Object.freeze({
   squish: 1.25,
-  scale: 0.875,
+  scale: 0.85,
   delay: 60,
   spriteX: 14,
   spriteY: 20,
@@ -414,6 +414,42 @@ const g = { ...DEFAULTS };
   };
 
   window.addEventListener("DOMContentLoaded", () => {
+    const $backToTop = $("#backToTop");
+    if ($backToTop) {
+      const updateBackToTop = () => {
+        $backToTop.classList.toggle("is-visible", window.scrollY > 320);
+      };
+
+      $backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      window.addEventListener("scroll", updateBackToTop, { passive: true });
+      updateBackToTop();
+    }
+
+    const navLinks = Array.from($$(".site-nav-links a"));
+    const navTargets = navLinks
+      .map((link) => document.querySelector(link.getAttribute("href")))
+      .filter(Boolean);
+    if ("IntersectionObserver" in window && navTargets.length) {
+      const navObserver = new IntersectionObserver(
+        (entries) => {
+          const visibleEntry = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (!visibleEntry) return;
+          navLinks.forEach((link) => {
+            const isActive = link.getAttribute("href") === `#${visibleEntry.target.id}`;
+            link.classList.toggle("is-active", isActive);
+            if (isActive) link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+          });
+        },
+        { rootMargin: "-20% 0px -65% 0px", threshold: [0, 0.2, 0.5] }
+      );
+      navTargets.forEach((target) => navObserver.observe(target));
+    }
+
     const $canvas = $("#canvas");
     const $preview = $("#uploadPreview");
     const $hand = new Image();
@@ -435,11 +471,10 @@ const g = { ...DEFAULTS };
 
     /** Reset transformations */
     const reset = () => {
-      // Reset animation - 使用展开操作符重新创建g对象，确保所有属性都被正确重置
-      Object.keys(DEFAULTS).forEach(key => {
+      Object.keys(DEFAULTS).forEach((key) => {
         g[key] = DEFAULTS[key];
       });
-      
+
       animation.refreshSprite();
       if (loop) {
         loop = clearRequestInterval(loop);
@@ -453,6 +488,14 @@ const g = { ...DEFAULTS };
       $("#scale").value = DEFAULTS.scale * 100;
       $("#fps").value = $("#fpsVal").value = ~~(1000 / DEFAULTS.delay);
       $("#toggleFlip").checked = false;
+      const adjustToggle = $("#toggleAdjust");
+      if (adjustToggle.checked) {
+        adjustToggle.checked = false;
+        $canvas.classList.remove("adjust-mode");
+        animation.toggleAdjust();
+      }
+      updateControlValues();
+      $("#exportStatus").innerText = "Controls reset. Ready to generate.";
     };
 
     /** Reset to default values */
@@ -462,12 +505,16 @@ const g = { ...DEFAULTS };
     const dropArea = $("#dropArea");
     const fileUpload = $("#uploadFile");
     const fileUploadName = $("#uploadFileName");
+    const clearSelectedTemplate = () => {
+      $$(".template-item").forEach((item) => item.classList.remove("is-selected"));
+    };
 
     const handleFiles = (file) => {
       $("#uploadError").innerText = "";
       fileUploadName.title = file.name;
       fileUploadName.innerText = truncateStr(file.name, 20);
       $preview.classList.remove("error");
+      clearSelectedTemplate();
       imageLoader.loadImage(URL.createObjectURL(file));
     };
 
@@ -504,6 +551,7 @@ const g = { ...DEFAULTS };
       if (url === "") return;
       $("#uploadError").innerText = "";
       $preview.classList.remove("error");
+      clearSelectedTemplate();
       imageLoader.loadImage(url);
     });
 
@@ -526,11 +574,17 @@ const g = { ...DEFAULTS };
     $$("#prev, #next").forEach((el) => {
       el.addEventListener("click", (e) => {
         playPauseButton(true);
-        animation.seek(e.target.id === "prev" ? -1 : 1);
+        animation.seek(e.currentTarget.id === "prev" ? -1 : 1);
       });
     });
 
     /// Customizations
+    const updateControlValues = () => {
+      $("#scaleValue").innerText = `${Math.round(parseFloat($("#scale").value))}%`;
+      $("#squishValue").innerText = `${Math.round(parseFloat($("#squish").value))}%`;
+      $("#speedValue").innerText = `${Math.round(parseFloat($("#fps").value))} fps`;
+    };
+
     ["input", "change"].forEach((event) => {
       // Change squishiness
       $("#squish").addEventListener(
@@ -541,6 +595,7 @@ const g = { ...DEFAULTS };
             g.squish = newSquish;
             animation.tick();
           }
+          updateControlValues();
         },
         { passive: true, capture: true }
       );
@@ -554,19 +609,17 @@ const g = { ...DEFAULTS };
             g.scale = newScale;
             animation.tick();
           }
+          updateControlValues();
         },
         { passive: true, capture: true }
       );
     });
 
     // Change speed
-    $$("#fps, #fpsVal").forEach((el) =>
-      el.addEventListener("change", (e) => {
-        // Round fps to nearest 10. This makes it *closer* to the actual gif output but not really
-        // const newDelay = ~~(~~(1000 / clamp(parseInt(e.target.value), 2, 50) / 10) * 10);
+    $$("#fps, #fpsVal").forEach((el) => {
+      ["input", "change"].forEach((event) => el.addEventListener(event, (e) => {
         const newDelay = ~~(1000 / clamp(parseInt(e.target.value), 2, 60));
 
-        // Restart animation loop with new delay, if it changed
         if (newDelay !== g.delay) {
           g.delay = newDelay;
           if (loop) {
@@ -574,8 +627,9 @@ const g = { ...DEFAULTS };
             animation.play();
           }
         }
-      })
-    );
+        updateControlValues();
+      }));
+    });
 
     // update input to match slider and vice versa
     $("#fps").addEventListener("input", (e) => {
@@ -584,6 +638,7 @@ const g = { ...DEFAULTS };
     $("#fpsVal").addEventListener("input", (e) => {
       $("#fps").value = e.target.value;
     });
+    updateControlValues();
 
     // flip sprite
     $("#toggleFlip").addEventListener("change", (e) => {
@@ -603,40 +658,74 @@ const g = { ...DEFAULTS };
     /// Gif export
     let btnTxt = "";
     let gifTime = 0;
+    let resultBlobUrl = "";
     const $renderResult = $("#result");
     const $renderInfo = $("#info");
     const $exportBtn = $("#export");
+    const $exportStatus = $("#exportStatus");
+    const $resultPanel = $("#output");
+    const $resultHint = $("#resultHint");
+    const $downloadGif = $("#downloadGif");
     const renderer = GifRenderer(
       animation,
       /** Gif renderer start */
       (startTime) => {
         gifTime = startTime;
-        URL.revokeObjectURL($renderResult.src);
+        if (resultBlobUrl) {
+          URL.revokeObjectURL(resultBlobUrl);
+          resultBlobUrl = "";
+        }
+        $renderResult.removeAttribute("src");
+        $resultPanel.classList.remove("is-visible");
+        $downloadGif.href = "#";
+        $downloadGif.classList.add("is-disabled");
+        $downloadGif.setAttribute("aria-disabled", "true");
         $exportBtn.disabled = true;
-        btnTxt = $exportBtn.innerText;
+        btnTxt = $exportBtn.innerHTML;
+        $exportStatus.innerText = "Rendering frames locally...";
+        $renderInfo.innerText = "0% rendered";
+        $resultHint.innerText = "Your new GIF is being prepared.";
       },
       /** Gif renderer progress */
       (progress) => {
         const p = `${Math.round(progress * 100)}%`;
-        $exportBtn.innerText = p;
-        $renderInfo.innerText = p;
+        $exportBtn.innerText = `Rendering ${p}`;
+        $exportStatus.innerText = `Rendering GIF: ${p}`;
+        $renderInfo.innerText = `${p} rendered`;
       },
       /** Gif renderer finish */
       (blob, endTime) => {
         const timeTaken = ((endTime - gifTime) / 1000).toFixed(2);
         const fileSize = (blob.size / 1000).toFixed(2);
-        $renderInfo.innerText = `100%, ${timeTaken}secs, ${fileSize}kb`;
-        $exportBtn.innerText = btnTxt;
+        resultBlobUrl = URL.createObjectURL(blob);
+        $renderInfo.innerText = `Rendered in ${timeTaken}s · ${fileSize} KB`;
+        $exportStatus.innerText = "GIF ready to download.";
+        $resultHint.innerText = "Your petpet GIF is ready.";
+        $exportBtn.innerHTML = btnTxt;
         $exportBtn.disabled = false;
-        $renderResult.src = URL.createObjectURL(blob);
+        $renderResult.src = resultBlobUrl;
+        $downloadGif.href = resultBlobUrl;
+        $downloadGif.classList.remove("is-disabled");
+        $downloadGif.setAttribute("aria-disabled", "false");
+        $resultPanel.classList.add("is-visible");
+        window.requestAnimationFrame(() => {
+          $resultPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        });
       }
     );
 
     $exportBtn.addEventListener("click", () => renderer.render());
+    $("#regenerate").addEventListener("click", () => renderer.render());
+    $downloadGif.addEventListener("click", (event) => {
+      if (!resultBlobUrl) event.preventDefault();
+    });
+    window.addEventListener("beforeunload", () => {
+      if (resultBlobUrl) URL.revokeObjectURL(resultBlobUrl);
+    });
 
     // Load sprites
     $hand.src = "./img/sprite.png";
-    imageLoader.loadImage("./img/doro-meme.png");
+    imageLoader.loadImage("./img/sample.png");
 
     // Play animation once everything loads
     window.addEventListener("load", () => animation.play());
